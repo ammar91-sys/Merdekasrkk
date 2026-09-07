@@ -1,6 +1,6 @@
 {
   "name": "SRKK Merdeka Celebration",
-  "description": "Official landing page for SRKK Merdeka celebration featuring celebratory graphics, event details, employee registration, and digital event passes.",
+  "description": "Official celebration portal and attendance tracking database dashboard for UTHM Merdeka 2026, featuring employee RSVP, real-time database management, check-in tracking, and digital passes.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

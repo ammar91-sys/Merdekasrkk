@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, Calendar, Users, FileText, Menu, X, CheckCircle, Award } from 'lucide-react';
+import { Sparkles, Calendar, Users, FileText, Menu, X, CheckCircle, Award, LayoutDashboard } from 'lucide-react';
 import { triggerMerdekaConfetti } from '../utils/confetti';
 import { EmployeeRegistration } from '../types';
 
@@ -8,6 +8,8 @@ interface NavbarProps {
   onOpenMyPass: () => void;
   registeredCount: number;
   capacity: number;
+  onOpenDashboard?: () => void;
+  currentView?: 'home' | 'dashboard';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -15,6 +17,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenMyPass,
   registeredCount,
   capacity,
+  onOpenDashboard,
+  currentView = 'home',
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shouted, setShouted] = useState(false);
@@ -96,6 +100,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Sparkles className="w-3.5 h-3.5 text-yellow-500" />
             </button>
 
+            {/* Attendance Dashboard Toggle Button */}
+            {onOpenDashboard && (
+              <button
+                id="nav-dashboard-toggle-btn"
+                onClick={onOpenDashboard}
+                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-xs border ${
+                  currentView === 'dashboard'
+                    ? 'bg-blue-900 text-white border-blue-950 ring-2 ring-blue-800'
+                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'
+                }`}
+                title="Open Attendance Database Dashboard"
+              >
+                <LayoutDashboard className={`w-3.5 h-3.5 ${currentView === 'dashboard' ? 'text-yellow-400' : 'text-blue-700'}`} />
+                <span className="hidden md:inline">Attendance</span>
+                <span>Dashboard</span>
+                <span className="px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-900 text-[10px] font-extrabold">
+                  {registeredCount}
+                </span>
+              </button>
+            )}
+
             {/* If registered, show My Pass button, else direct to Register */}
             {currentRegistration ? (
               <button
@@ -154,6 +179,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
           ))}
           <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+            {onOpenDashboard && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenDashboard();
+                }}
+                className="w-full py-2.5 px-3 rounded-xl font-bold text-blue-900 bg-blue-50 hover:bg-blue-100 flex items-center justify-between"
+              >
+                <span className="flex items-center gap-2">
+                  <LayoutDashboard className="w-4 h-4 text-blue-800" />
+                  Attendance Database Dashboard
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-blue-200 text-blue-900 text-xs font-black">
+                  {registeredCount}
+                </span>
+              </button>
+            )}
             <a
               href="#register"
               onClick={() => setMobileMenuOpen(false)}

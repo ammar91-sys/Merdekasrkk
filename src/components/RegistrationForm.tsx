@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { User, Mail, Building, MapPin, Shirt, Utensils, Award, Users, CheckCircle, AlertCircle, Sparkles, Send } from 'lucide-react';
+import { User, Mail, Building, MapPin, Shirt, Utensils, Award, Users, CheckCircle, AlertCircle, Sparkles, Send, LayoutDashboard } from 'lucide-react';
 import { DEPARTMENTS, LOCATIONS, CONTESTS } from '../data/eventData';
 import { EmployeeRegistration } from '../types';
 import { triggerMerdekaConfetti } from '../utils/confetti';
+import { attendanceDb } from '../services/attendanceDb';
 
 interface RegistrationFormProps {
   onRegisterSuccess: (registration: EmployeeRegistration) => void;
   registeredCount: number;
   capacity: number;
   preselectedActivity?: string | null;
+  onOpenDashboard?: () => void;
 }
 
 export const RegistrationForm: React.FC<RegistrationFormProps> = ({
@@ -16,6 +18,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   registeredCount,
   capacity,
   preselectedActivity,
+  onOpenDashboard,
 }) => {
   // Form State
   const [employeeName, setEmployeeName] = useState('');
@@ -113,15 +116,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
       plusOne,
       plusOneName: plusOne ? plusOneName.trim() : undefined,
       registrationDate: new Date().toISOString().split('T')[0],
-      ticketNumber: `SRKK-MDK-${randomSeq}`,
+      ticketNumber: `UTHM-MDK-${randomSeq}`,
       tableNumber: assignedTable,
+      attendanceStatus: 'Confirmed',
+      confirmedAt: new Date().toISOString(),
     };
 
-    setTimeout(() => {
+    // Save attendance directly into persistent database
+    attendanceDb.saveAttendance(newReg).then(() => {
       triggerMerdekaConfetti();
       onRegisterSuccess(newReg);
       setIsSubmitting(false);
-    }, 400);
+    });
   };
 
   const shirtSizes: Array<EmployeeRegistration['shirtSize']> = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
@@ -161,17 +167,31 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 </p>
               </div>
 
-              {/* Live Capacity Meter in Slate-900 Block */}
-              <div className="bg-slate-900/90 p-5 rounded-[1.5rem] border border-blue-800 shrink-0 text-center sm:text-right shadow-md">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-yellow-400 font-bold">
-                  Ballroom Seating
+              {/* Live Capacity Meter & Dashboard Shortcut */}
+              <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
+                <div className="bg-slate-900/90 p-5 rounded-[1.5rem] border border-blue-800 text-center sm:text-right shadow-md w-full sm:w-auto">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-yellow-400 font-bold">
+                    Ballroom Seating
+                  </div>
+                  <div className="text-2xl sm:text-3xl font-black text-white font-display mt-0.5">
+                    {registeredCount} / {capacity}
+                  </div>
+                  <div className="text-[11px] text-blue-200 mt-0.5 font-medium">
+                    {capacity - registeredCount} seats remaining
+                  </div>
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-white font-display mt-0.5">
-                  {registeredCount} / {capacity}
-                </div>
-                <div className="text-[11px] text-blue-200 mt-0.5 font-medium">
-                  {capacity - registeredCount} seats remaining
-                </div>
+
+                {onOpenDashboard && (
+                  <button
+                    type="button"
+                    onClick={onOpenDashboard}
+                    id="form-open-dashboard-btn"
+                    className="w-full sm:w-auto px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl text-xs font-bold transition-all border border-white/20 flex items-center justify-center gap-2 shadow-xs"
+                  >
+                    <LayoutDashboard className="w-4 h-4 text-yellow-400" />
+                    <span>View Attendance Dashboard</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -508,17 +528,17 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 type="submit"
                 id="submit-registration-btn"
                 disabled={isSubmitting}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-yellow-400 text-slate-900 font-black py-4 px-8 rounded-xl hover:bg-yellow-300 transition-colors uppercase tracking-widest text-xs shadow-md cursor-pointer disabled:opacity-50"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-yellow-400 text-slate-900 font-black py-4 px-8 rounded-xl hover:bg-yellow-300 transition-colors uppercase tracking-widest text-xs shadow-md cursor-pointer disabled:opacity-50 active:scale-95"
               >
                 {isSubmitting ? (
                   <>
                     <span className="animate-spin">🌀</span>
-                    <span>Issuing Digital Pass...</span>
+                    <span>Saving to Database & Issuing Pass...</span>
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" />
-                    <span>Submit RSVP & Get Digital Pass</span>
+                    <CheckCircle className="w-4 h-4 text-emerald-800" />
+                    <span>Confirm My Attendance</span>
                   </>
                 )}
               </button>

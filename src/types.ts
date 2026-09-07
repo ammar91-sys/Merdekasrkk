@@ -15,6 +15,8 @@ export interface EmployeeRegistration {
   registrationDate: string;
   ticketNumber: string;
   tableNumber?: string;
+  attendanceStatus?: 'Confirmed' | 'Checked-In';
+  confirmedAt?: string;
 }
 
 export interface AgendaItem {

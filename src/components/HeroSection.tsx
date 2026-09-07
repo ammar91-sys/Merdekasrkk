@@ -125,12 +125,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {/* Ultra-bold Display Headline */}
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.9] tracking-tighter mb-4 font-display">
                 MERDEKA <br />
+                <span className="text-white">UTHM </span>
                 <span className="text-yellow-400">2026.</span>
               </h1>
 
               {/* Sub-headline */}
               <p className="text-base sm:text-lg text-blue-100 max-w-lg font-medium leading-relaxed mb-6">
-                SRKK Independence Day Celebration: Uniting for Excellence, Innovation, and a Brighter Future Together. Teguh Bersama, Memacu Masa Depan.
+                UTHM Independence Day Celebration: Uniting for Excellence, Innovation, and a Brighter Future Together. Teguh Bersama, Memacu Masa Depan.
               </p>
 
               {/* Quick Perks Pill Row */}
