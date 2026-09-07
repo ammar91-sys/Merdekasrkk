@@ -1,21 +1,21 @@
 import { AgendaItem, ActivityContest, EmployeeRegistration, MerdekaWish } from '../types';
 
 export const EVENT_DETAILS = {
-  company: 'SRKK',
-  fullName: 'SRKK Group of Companies',
-  title: 'SRKK Jiwa Merdeka 2026',
+  company: 'UTHM',
+  fullName: 'Universiti Tun Hussein Onn Malaysia (UTHM)',
+  title: 'UTHM Jiwa Merdeka 2026',
   tagline: 'Teguh Bersama, Memacu Masa Depan • United in Spirit, Empowering Tomorrow',
-  edition: '69th National Day Celebration',
-  date: 'Friday, 28 August 2026',
-  rawDate: '2026-08-28T14:00:00+08:00',
-  time: '2:00 PM – 7:30 PM (MYT)',
-  venue: 'Grand Ballroom & Cultural Courtyard',
-  venueDetail: 'Connexion Conference & Event Centre (CCEC) @ Nexus, Bangsar South, Kuala Lumpur',
-  virtualPlatform: 'Microsoft Teams Live Event (Simultaneous Hybrid Broadcast for Regional Offices)',
-  dressCode: 'Busana Tradisional Warisan / Jalur Gemilang Glam (Traditional Malay, Chinese, Indian, Borneo cultural wear or Smart Casual in Patriotic Red/Blue/Yellow)',
-  capacity: 250,
-  rsvpDeadline: 'Wednesday, 19 August 2026, 6:00 PM',
-  coordinatorContact: 'hr-events@srkk.com | +603-7890 2888 (Ext 104)',
+  edition: 'Sambutan Bulan Kemerdekaan & Hari Malaysia Ke-69',
+  date: 'Wednesday, 16 September 2026',
+  rawDate: '2026-09-16T09:00:00+08:00',
+  time: '9:00 AM – 2:00 PM (MYT)',
+  venue: 'Dewan Sultan Ibrahim (DSI)',
+  venueDetail: 'Dewan Sultan Ibrahim (DSI), Kampus Induk UTHM, Parit Raja, Batu Pahat, Johor',
+  virtualPlatform: 'UTHM Official YouTube & Facebook Live Streaming',
+  dressCode: 'Busana Tradisional Warisan Melayu / Batik Johor / Kebangsaan',
+  capacity: 500,
+  rsvpDeadline: 'Monday, 14 September 2026, 5:00 PM',
+  coordinatorContact: 'ammar@uthm.edu.my | 019-777 2167',
 };
 
 export const HIGHLIGHT_STATS = [

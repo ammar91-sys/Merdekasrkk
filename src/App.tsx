@@ -12,6 +12,7 @@ import { Footer } from './components/Footer';
 import { EventPassModal } from './components/EventPassModal';
 import { AttendanceDashboard } from './components/AttendanceDashboard';
 import { WhatsAppFloatingButton } from './components/WhatsAppFloatingButton';
+import { CountdownBanner } from './components/CountdownBanner';
 import { attendanceDb } from './services/attendanceDb';
 import { EVENT_DETAILS } from './data/eventData';
 import { EmployeeRegistration } from './types';
@@ -97,6 +98,16 @@ export default function App() {
         }}
         currentView={currentView}
       />
+
+      {/* Prominent Live Event Countdown Banner */}
+      {currentView === 'home' && (
+        <CountdownBanner
+          onRsvpClick={() => {
+            const regElem = document.getElementById('register');
+            if (regElem) regElem.scrollIntoView({ behavior: 'smooth' });
+          }}
+        />
+      )}
 
       {/* Main Content Area */}
       <main className="flex-1">

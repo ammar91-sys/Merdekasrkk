@@ -28,22 +28,27 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
-    const targetDate = new Date(EVENT_DETAILS.rawDate).getTime();
-
     const updateCountdown = () => {
+      let targetDate = new Date(EVENT_DETAILS.rawDate).getTime();
       const now = new Date().getTime();
-      const difference = targetDate - now;
+      let difference = targetDate - now;
 
-      if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((difference / 1000 / 60) % 60);
-        const seconds = Math.floor((difference / 1000) % 60);
-        setTimeLeft({ days, hours, minutes, seconds });
-      } else {
-        // If event has arrived/passed, show celebration mode
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      // If target time has passed, roll forward to upcoming Merdeka / Hari Malaysia celebration date
+      if (difference <= 0) {
+        const nextYearDate = new Date(EVENT_DETAILS.rawDate);
+        nextYearDate.setFullYear(new Date().getFullYear() + (difference < -86400000 * 30 ? 1 : 0));
+        targetDate = nextYearDate.getTime();
+        difference = targetDate - now;
+        if (difference <= 0) {
+          difference = 10 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000;
+        }
       }
+
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((difference / (1000 * 60)) % 60);
+      const seconds = Math.floor((difference / 1000) % 60);
+      setTimeLeft({ days, hours, minutes, seconds });
     };
 
     updateCountdown();
@@ -57,7 +62,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'SRKK Jiwa Merdeka 2026 Celebration',
+          title: 'UTHM Jiwa Merdeka 2026 Celebration',
           text: 'Join the annual SRKK Merdeka Celebration! Register your spot for the cultural feast, games, and prizes.',
           url: window.location.href,
         });
@@ -221,49 +226,55 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </section>
 
             {/* Section 2: Countdown & Attendance Action Card */}
-            <section className="bg-slate-900 rounded-[2rem] p-6 sm:p-8 text-white relative overflow-hidden shadow-md">
+            <section className="bg-slate-900 rounded-[2rem] p-6 sm:p-8 text-white relative overflow-hidden shadow-md border border-slate-800">
               <div className="relative z-10 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base sm:text-lg font-bold text-yellow-400 font-display">
-                    Countdown to Celebration
-                  </h3>
-                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-                    RSVP Closes Aug 19
+                  <div className="flex items-center gap-2">
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                    </span>
+                    <h3 className="text-base sm:text-lg font-bold text-yellow-400 font-display">
+                      Countdown to Celebration
+                    </h3>
+                  </div>
+                  <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-800 px-2 py-0.5 rounded-md border border-slate-700">
+                    RSVP Closes 14 Sept
                   </span>
                 </div>
 
                 {/* Geometric 4-Block Countdown Timer */}
                 <div className="grid grid-cols-4 gap-2 text-center">
-                  <div className="p-2.5 rounded-xl bg-slate-800 border border-slate-700/80">
-                    <span className="block text-2xl font-black text-white font-display">
-                      {timeLeft.days}
+                  <div className="p-2.5 rounded-xl bg-slate-800/90 border border-slate-700/80 shadow-xs">
+                    <span className="block text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">
+                      {String(timeLeft.days).padStart(2, '0')}
                     </span>
                     <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">
-                      Days
+                      Hari / Days
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-800 border border-slate-700/80">
-                    <span className="block text-2xl font-black text-yellow-400 font-display">
-                      {timeLeft.hours}
+                  <div className="p-2.5 rounded-xl bg-slate-800/90 border border-slate-700/80 shadow-xs">
+                    <span className="block text-2xl sm:text-3xl font-black text-yellow-400 font-mono tracking-tight">
+                      {String(timeLeft.hours).padStart(2, '0')}
                     </span>
                     <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">
-                      Hours
+                      Jam / Hours
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-800 border border-slate-700/80">
-                    <span className="block text-2xl font-black text-white font-display">
-                      {timeLeft.minutes}
+                  <div className="p-2.5 rounded-xl bg-slate-800/90 border border-slate-700/80 shadow-xs">
+                    <span className="block text-2xl sm:text-3xl font-black text-white font-mono tracking-tight">
+                      {String(timeLeft.minutes).padStart(2, '0')}
                     </span>
                     <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">
-                      Mins
+                      Minit / Mins
                     </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-slate-800 border border-slate-700/80">
-                    <span className="block text-2xl font-black text-red-400 font-display">
-                      {timeLeft.seconds}
+                  <div className="p-2.5 rounded-xl bg-slate-800/90 border border-red-900/60 shadow-xs relative overflow-hidden">
+                    <span className="block text-2xl sm:text-3xl font-black text-red-400 font-mono tracking-tight">
+                      {String(timeLeft.seconds).padStart(2, '0')}
                     </span>
-                    <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">
-                      Secs
+                    <span className="text-[9px] uppercase tracking-wider text-red-300 font-bold">
+                      Saat / Secs
                     </span>
                   </div>
                 </div>
