@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.01em;
+  }
+  h1, h2, h3, .font-display {
+    font-family: 'Cabinet Grotesk', 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Geometric Balance Glowing Orbs & Accents */
+.geometric-orb-yellow {
+  background: radial-gradient(circle, rgba(250, 204, 21, 0.25) 0%, rgba(250, 204, 21, 0) 70%);
+}
+
+.geometric-orb-red {
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.3) 0%, rgba(220, 38, 38, 0) 70%);
+}
+
+.geometric-orb-blue {
+  background: radial-gradient(circle, rgba(30, 58, 138, 0.35) 0%, rgba(30, 58, 138, 0) 70%);
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+.animate-subtle-pulse {
+  animation: pulse-subtle 4s ease-in-out infinite;
+}
+

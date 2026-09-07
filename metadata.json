@@ -1,0 +1,6 @@
+{
+  "name": "SRKK Merdeka Celebration",
+  "description": "Official landing page for SRKK Merdeka celebration featuring celebratory graphics, event details, employee registration, and digital event passes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
